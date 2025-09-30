@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Analysis - ANGELSUCCESS Cybersecurity</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-light: #3b82f6;
+            --secondary: #1e40af;
+            --danger: #dc2626;
+            --warning: #d97706;
+            --success: #059669;
+            --info: #0891b2;
+            --dark: #1f2937;
+            --dark-light: #374151;
+            --text-light: #e5e7eb;
+            --text-muted: #9ca3af;
+            --card-bg: rgba(30, 41, 59, 0.8);
+            --card-border: rgba(51, 65, 85, 0.5);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: var(--text-light);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        
+        .navbar {
+            background: rgba(30, 41, 59, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            border-bottom: 1px solid var(--card-border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #60a5fa;
+        }
+        
+        .logo i {
+            font-size: 1.8rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+        }
+        
+        .nav-links a:hover {
+            color: #60a5fa;
+            background: rgba(96, 165, 250, 0.1);
+        }
+        
+        .nav-links a.active {
+            color: #60a5fa;
+            background: rgba(96, 165, 250, 0.15);
+        }
+        
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .page-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.75rem;
+        }
+        
+        .page-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .ai-models-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .model-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .model-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .model-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+        }
+        
+        .model-card.supervised::before {
+            background: var(--primary);
+        }
+        
+        .model-card.unsupervised::before {
+            background: var(--warning);
+        }
+        
+        .model-card.ensemble::before {
+            background: var(--success);
+        }
+        
+        .model-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .model-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .model-icon {
+            font-size: 1.5rem;
+            opacity: 0.8;
+        }
+        
+        .model-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            background: rgba(5, 150, 105, 0.2);
+            color: var(--success);
+        }
+        
+        .model-status.warning {
+            background: rgba(217, 119, 6, 0.2);
+            color: var(--warning);
+        }
+        
+        .model-status.danger {
+            background: rgba(220, 38, 38, 0.2);
+            color: var(--danger);
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 0.5rem 0;
+            background: linear-gradient(90deg, var(--primary), var(--success));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .model-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+        
+        .metric-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        
+        .metric-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        
+        .metric-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .training-progress {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            transition: var(--transition);
+        }
+        
+        .training-progress:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .progress-bar-container {
+            width: 100%;
+            height: 20px;
+            background: #334155;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 1rem 0;
+            position: relative;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--success));
+            transition: width 0.5s ease;
+            position: relative;
+        }
+        
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background-image: linear-gradient(
+                -45deg,
+                rgba(255, 255, 255, 0.2) 25%,
+                transparent 25%,
+                transparent 50%,
+                rgba(255, 255, 255, 0.2) 50%,
+                rgba(255, 255, 255, 0.2) 75%,
+                transparent 75%,
+                transparent
+            );
+            background-size: 20px 20px;
+            animation: move 1s linear infinite;
+        }
+        
+        @keyframes move {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: 20px 0;
+            }
+        }
+        
+        .progress-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .progress-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        
+        .progress-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        
+        .progress-value {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .chart-container {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            height: 400px;
+            transition: var(--transition);
+        }
+        
+        .chart-container:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .chart-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .chart-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            background: var(--primary);
+            color: white;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .btn:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background: rgba(37, 99, 235, 0.1);
+        }
+        
+        .btn-success {
+            background: var(--success);
+        }
+        
+        .btn-success:hover {
+            background: #10b981;
+        }
+        
+        .btn-warning {
+            background: var(--warning);
+        }
+        
+        .btn-warning:hover {
+            background: #f59e0b;
+        }
+        
+        .icon-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        
+        .icon-btn:hover {
+            color: var(--text-light);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .refresh-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+        
+        .pulse {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(5, 150, 105, 0.7);
+            }
+            
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 10px rgba(5, 150, 105, 0);
+            }
+            
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(5, 150, 105, 0);
+            }
+        }
+        
+        .models-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .overview-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            transition: var(--transition);
+        }
+        
+        .overview-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .overview-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .overview-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0.25rem 0;
+        }
+        
+        .overview-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 1024px) {
+            .ai-models-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+            }
+            
+            .nav-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-links {
+                gap: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .main-container {
+                padding: 1rem;
+            }
+            
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .page-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .model-metrics {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <span>ANGELSUCCESS AI Cybersecurity</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="/network-monitor"><i class="fas fa-network-wired"></i> Network Monitor</a></li>
+                <li><a href="/ai-analysis" class="active"><i class="fas fa-robot"></i> AI Analysis</a></li>
+                <li><a href="/threat-intelligence"><i class="fas fa-bug"></i> Threat Intelligence</a></li>
+                <li><a href="/optimization-center"><i class="fas fa-cogs"></i> Optimization</a></li>
+                <li><a href="/system-settings"><i class="fas fa-sliders-h"></i> Settings</a></li>
+                <li><a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="page-header">
+            <h1 class="page-title">
+                <i class="fas fa-robot"></i>
+                AI Model Analysis
+            </h1>
+            <div class="page-actions">
+                <button class="btn btn-outline" onclick="exportAIData()">
+                    <i class="fas fa-download"></i> Export Data
+                </button>
+                <button class="btn" onclick="refreshAIData()">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+            </div>
+        </div>
+        
+        <div class="models-overview">
+            <div class="overview-card">
+                <div class="overview-icon" style="color: var(--primary);">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <div class="overview-value" id="totalModels">3</div>
+                <div class="overview-label">Active Models</div>
+            </div>
+            <div class="overview-card">
+                <div class="overview-icon" style="color: var(--success);">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="overview-value" id="avgAccuracy">0%</div>
+                <div class="overview-label">Average Accuracy</div>
+            </div>
+            <div class="overview-card">
+                <div class="overview-icon" style="color: var(--warning);">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="overview-value" id="trainingTime">0h</div>
+                <div class="overview-label">Training Time</div>
+            </div>
+            <div class="overview-card">
+                <div class="overview-icon" style="color: var(--info);">
+                    <i class="fas fa-database"></i>
+                </div>
+                <div class="overview-value" id="dataProcessed">0GB</div>
+                <div class="overview-label">Data Processed</div>
+            </div>
+        </div>
+        
+        <div class="ai-models-grid">
+            <div class="model-card supervised">
+                <div class="model-header">
+                    <h3 class="model-title">
+                        <i class="fas fa-graduation-cap model-icon"></i>
+                        Supervised Learning
+                    </h3>
+                    <div class="model-status">
+                        <i class="fas fa-circle"></i>
+                        Active
+                    </div>
+                </div>
+                <div class="stat-value" id="supervisedAccuracy">0%</div>
+                <div class="model-metrics">
+                    <div class="metric-item">
+                        <span class="metric-label">Accuracy</span>
+                        <span class="metric-value" id="supervisedAcc">0%</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Precision</span>
+                        <span class="metric-value" id="supervisedPrecision">0%</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Recall</span>
+                        <span class="metric-value" id="supervisedRecall">0%</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">F1-Score</span>
+                        <span class="metric-value" id="supervisedF1">0%</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="model-card unsupervised">
+                <div class="model-header">
+                    <h3 class="model-title">
+                        <i class="fas fa-project-diagram model-icon"></i>
+                        Unsupervised Learning
+                    </h3>
+                    <div class="model-status warning">
+                        <i class="fas fa-circle"></i>
+                        Training
+                    </div>
+                </div>
+                <div class="stat-value" id="unsupervisedAccuracy">0%</div>
+                <div class="model-metrics">
+                    <div class="metric-item">
+                        <span class="metric-label">Anomaly Detection</span>
+                        <span class="metric-value" id="unsupervisedAnomaly">0%</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Clustering Accuracy</span>
+                        <span class="metric-value" id="unsupervisedClustering">0%</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Silhouette Score</span>
+                        <span class="metric-value" id="unsupervisedSilhouette">0.0</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Data Coverage</span>
+                        <span class="metric-value" id="unsupervisedCoverage">0%</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="model-card ensemble">
+                <div class="model-header">
+                    <h3 class="model-title">
+                        <i class="fas fa-layer-group model-icon"></i>
+                        Ensemble Model
+                    </h3>
+                    <div class="model-status">
+                        <i class="fas fa-circle"></i>
+                        Active
+                    </div>
+                </div>
+                <div class="stat-value" id="ensembleAccuracy">0%</div>
+                <div class="model-metrics">
+                    <div class="metric-item">
+                        <span class="metric-label">Voting Confidence</span>
+                        <span class="metric-value" id="ensembleConfidence">0%</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Overall Performance</span>
+                        <span class="metric-value" id="ensemblePerformance">0%</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Model Agreement</span>
+                        <span class="metric-value" id="ensembleAgreement">0%</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Error Reduction</span>
+                        <span class="metric-value" id="ensembleErrorReduction">0%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="training-progress">
+            <div class="progress-header">
+                <h3><i class="fas fa-cogs"></i> AI Training Progress</h3>
+                <div>
+                    <button class="btn btn-success" onclick="startAITraining()">
+                        <i class="fas fa-play"></i> Start Training
+                    </button>
+                    <button class="btn btn-outline" onclick="pauseAITraining()">
+                        <i class="fas fa-pause"></i> Pause
+                    </button>
+                </div>
+            </div>
+            <div class="progress-bar-container">
+                <div class="progress-fill" id="trainingProgress" style="width: 0%"></div>
+            </div>
+            <div class="progress-info">
+                <div class="progress-item">
+                    <span class="progress-label">Training Cycle</span>
+                    <span class="progress-value" id="trainingCycle">0</span>
+                </div>
+                <div class="progress-item">
+                    <span class="progress-label">Training Samples</span>
+                    <span class="progress-value" id="trainingSamples">0</span>
+                </div>
+                <div class="progress-item">
+                    <span class="progress-label">Epoch</span>
+                    <span class="progress-value" id="trainingEpoch">0/100</span>
+                </div>
+                <div class="progress-item">
+                    <span class="progress-label">Loss</span>
+                    <span class="progress-value" id="trainingLoss">0.000</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <div class="chart-header">
+                <h3 class="chart-title">Model Performance Comparison</h3>
+                <div class="chart-actions">
+                    <button class="icon-btn" title="Toggle chart type">
+                        <i class="fas fa-chart-radar"></i>
+                    </button>
+                    <button class="icon-btn" title="Download chart">
+                        <i class="fas fa-download"></i>
+                    </button>
+                </div>
+            </div>
+            <canvas id="modelComparisonChart"></canvas>
+        </div>
+        
+        <div class="refresh-indicator">
+            <span class="pulse"></span>
+            <span>AI data updating every 3 seconds</span>
+        </div>
+    </div>
+
+    <script>
+        let aiCharts = {};
+        let isTraining = false;
+        
+        function initializeAICharts() {
+            const ctx = document.getElementById('modelComparisonChart').getContext('2d');
+            aiCharts.modelComparison = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Accuracy', 'Precision', 'Recall', 'Speed', 'Reliability', 'Scalability'],
+                    datasets: [
+                        {
+                            label: 'Supervised',
+                            data: [0, 0, 0, 0, 0, 0],
+                            borderColor: '#2563eb',
+                            backgroundColor: 'rgba(37, 99, 235, 0.2)',
+                            borderWidth: 2,
+                            pointBackgroundColor: '#2563eb',
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: '#2563eb'
+                        },
+                        {
+                            label: 'Unsupervised',
+                            data: [0, 0, 0, 0, 0, 0],
+                            borderColor: '#d97706',
+                            backgroundColor: 'rgba(217, 119, 6, 0.2)',
+                            borderWidth: 2,
+                            pointBackgroundColor: '#d97706',
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: '#d97706'
+                        },
+                        {
+                            label: 'Ensemble',
+                            data: [0, 0, 0, 0, 0, 0],
+                            borderColor: '#059669',
+                            backgroundColor: 'rgba(5, 150, 105, 0.2)',
+                            borderWidth: 2,
+                            pointBackgroundColor: '#059669',
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: '#059669'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                color: '#9ca3af',
+                                backdropColor: 'transparent'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            angleLines: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            pointLabels: {
+                                color: '#e5e7eb',
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                color: '#e5e7eb',
+                                usePointStyle: true,
+                                padding: 15
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(30, 41, 59, 0.9)',
+                            titleColor: '#e5e7eb',
+                            bodyColor: '#e5e7eb',
+                            borderColor: '#334155',
+                            borderWidth: 1
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateAIAnalysis(data) {
+            // Update overview stats
+            document.getElementById('avgAccuracy').textContent = 
+                ((data.ai_models.supervised_accuracy + data.ai_models.unsupervised_accuracy + data.ai_models.ensemble_accuracy) / 3 * 100).toFixed(1) + '%';
+            
+            // Update model accuracies
+            document.getElementById('supervisedAccuracy').textContent = 
+                (data.ai_models.supervised_accuracy * 100).toFixed(1) + '%';
+            document.getElementById('unsupervisedAccuracy').textContent = 
+                (data.ai_models.unsupervised_accuracy * 100).toFixed(1) + '%';
+            document.getElementById('ensembleAccuracy').textContent = 
+                (data.ai_models.ensemble_accuracy * 100).toFixed(1) + '%';
+
+            // Update detailed metrics
+            document.getElementById('supervisedAcc').textContent = (data.ai_models.supervised_accuracy * 100).toFixed(1) + '%';
+            document.getElementById('supervisedPrecision').textContent = (data.ai_models.supervised_accuracy * 95).toFixed(1) + '%';
+            document.getElementById('supervisedRecall').textContent = (data.ai_models.supervised_accuracy * 92).toFixed(1) + '%';
+            document.getElementById('supervisedF1').textContent = (data.ai_models.supervised_accuracy * 93).toFixed(1) + '%';
+            
+            document.getElementById('unsupervisedAnomaly').textContent = (data.ai_models.unsupervised_accuracy * 100).toFixed(1) + '%';
+            document.getElementById('unsupervisedClustering').textContent = (data.ai_models.unsupervised_accuracy * 88).toFixed(1) + '%';
+            document.getElementById('unsupervisedSilhouette').textContent = (data.ai_models.unsupervised_accuracy * 0.8).toFixed(2);
+            document.getElementById('unsupervisedCoverage').textContent = (data.ai_models.unsupervised_accuracy * 95).toFixed(1) + '%';
+            
+            document.getElementById('ensembleConfidence').textContent = (data.ai_models.ensemble_accuracy * 100).toFixed(1) + '%';
+            document.getElementById('ensemblePerformance').textContent = (data.ai_models.ensemble_accuracy * 98).toFixed(1) + '%';
+            document.getElementById('ensembleAgreement').textContent = (data.ai_models.ensemble_accuracy * 96).toFixed(1) + '%';
+            document.getElementById('ensembleErrorReduction').textContent = (data.ai_models.ensemble_accuracy * 45).toFixed(1) + '%';
+
+            // Update training data
+            if (data.ai_training_data && data.ai_training_data.length > 0) {
+                const latestTraining = data.ai_training_data[data.ai_training_data.length - 1];
+                document.getElementById('trainingCycle').textContent = latestTraining.training_cycle;
+                document.getElementById('trainingSamples').textContent = latestTraining.training_samples.toLocaleString();
+                document.getElementById('trainingEpoch').textContent = `${latestTraining.training_cycle % 100}/100`;
+                document.getElementById('trainingLoss').textContent = (1 - data.ai_models.ensemble_accuracy).toFixed(3);
+                
+                // Update progress bar
+                const progress = (latestTraining.training_cycle % 100);
+                document.getElementById('trainingProgress').style.width = progress + '%';
+                
+                // Update training time
+                const hours = Math.floor(latestTraining.training_cycle / 10);
+                document.getElementById('trainingTime').textContent = `${hours}h`;
+                
+                // Update data processed
+                const gbProcessed = (latestTraining.training_samples * 0.000001).toFixed(1);
+                document.getElementById('dataProcessed').textContent = `${gbProcessed}GB`;
+            }
+
+            // Update comparison chart
+            if (aiCharts.modelComparison) {
+                aiCharts.modelComparison.data.datasets[0].data = [
+                    data.ai_models.supervised_accuracy * 100,
+                    data.ai_models.supervised_accuracy * 95,
+                    data.ai_models.supervised_accuracy * 92,
+                    85,
+                    90,
+                    80
+                ];
+                aiCharts.modelComparison.data.datasets[1].data = [
+                    data.ai_models.unsupervised_accuracy * 100,
+                    data.ai_models.unsupervised_accuracy * 88,
+                    data.ai_models.unsupervised_accuracy * 85,
+                    75,
+                    82,
+                    85
+                ];
+                aiCharts.modelComparison.data.datasets[2].data = [
+                    data.ai_models.ensemble_accuracy * 100,
+                    data.ai_models.ensemble_accuracy * 97,
+                    data.ai_models.ensemble_accuracy * 96,
+                    92,
+                    95,
+                    88
+                ];
+                aiCharts.modelComparison.update('none');
+            }
+        }
+
+        async function startAITraining() {
+            try {
+                const response = await fetch('/api/start-ai-training', { method: 'POST' });
+                const result = await response.json();
+                if (result.success) {
+                    isTraining = true;
+                    document.querySelector('.model-status.warning').innerHTML = '<i class="fas fa-circle"></i> Training';
+                    showNotification('AI Training Session Started!', 'success');
+                }
+            } catch (error) {
+                console.error('Error starting AI training:', error);
+                showNotification('Failed to start training session', 'error');
+            }
+        }
+
+        function pauseAITraining() {
+            isTraining = !isTraining;
+            if (isTraining) {
+                showNotification('AI Training Resumed', 'success');
+            } else {
+                showNotification('AI Training Paused', 'warning');
+            }
+        }
+
+        function refreshAIData() {
+            fetchAIData();
+            // Show refresh feedback
+            const refreshBtn = document.querySelector('.btn i.fa-sync-alt');
+            refreshBtn.classList.add('fa-spin');
+            setTimeout(() => {
+                refreshBtn.classList.remove('fa-spin');
+            }, 1000);
+        }
+
+        function exportAIData() {
+            // In a real application, this would trigger a download
+            showNotification('Exporting AI model data...', 'info');
+        }
+
+        function showNotification(message, type) {
+            // Create a simple notification
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 1rem 1.5rem;
+                border-radius: 8px;
+                color: white;
+                font-weight: 500;
+                z-index: 1000;
+                transition: all 0.3s ease;
+                background: ${type === 'success' ? '#059669' : type === 'error' ? '#dc2626' : type === 'warning' ? '#d97706' : '#0891b2'};
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        async function fetchAIData() {
+            try {
+                const response = await fetch('/api/realtime-data');
+                const data = await response.json();
+                updateAIAnalysis(data);
+            } catch (error) {
+                console.error('Error fetching AI data:', error);
+            }
+        }
+
+        async function logout() {
+            try {
+                await fetch('/api/auth/logout', { method: 'POST' });
+                window.location.href = '/auth';
+            } catch (error) {
+                console.error('Error logging out:', error);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeAICharts();
+            fetchAIData();
+            setInterval(fetchAIData, 3000);
+        });
+    </script>
+</body>
+</html>

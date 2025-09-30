@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ANGELSUCCESS - AI-Powered Cybersecurity Solutions</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0a2463;
+      --secondary: #1e40af;
+      --accent: #3b82f6;
+      --danger: #ef4444;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --light: #f8fafc;
+      --dark: #1e293b;
+      --gray: #64748b;
+      --background: #f1f5f9;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    body {
+      background-color: var(--light);
+      color: var(--dark);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    /* Header & Navigation */
+    header {
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+    }
+    
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 0;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .logo-icon {
+      font-size: 2rem;
+      color: var(--accent);
+    }
+    
+    .logo h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+    }
+    
+    .nav-links a {
+      text-decoration: none;
+      color: var(--dark);
+      font-weight: 500;
+      transition: color 0.3s;
+      position: relative;
+    }
+    
+    .nav-links a:hover {
+      color: var(--accent);
+    }
+    
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -5px;
+      left: 0;
+      background-color: var(--accent);
+      transition: width 0.3s;
+    }
+    
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+    
+    .auth-btn {
+      background: var(--primary);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+    
+    .auth-btn:hover {
+      background: var(--secondary);
+      transform: translateY(-2px);
+    }
+    
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--primary);
+      cursor: pointer;
+    }
+    
+    /* Mobile Menu */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 80px;
+      left: 0;
+      width: 100%;
+      background: white;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      z-index: 999;
+    }
+    
+    .mobile-menu.active {
+      display: block;
+    }
+    
+    .mobile-nav-links {
+      list-style: none;
+      padding: 2rem;
+    }
+    
+    .mobile-nav-links li {
+      margin-bottom: 1rem;
+    }
+    
+    .mobile-nav-links a {
+      text-decoration: none;
+      color: var(--dark);
+      font-weight: 500;
+      font-size: 1.1rem;
+      display: block;
+      padding: 0.5rem 0;
+    }
+    
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      color: white;
+      padding: 8rem 0 5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ffffff" fill-opacity="0.1" d="M0,128L48,117.3C96,107,192,85,288,112C384,139,480,213,576,218.7C672,224,768,160,864,138.7C960,117,1056,139,1152,149.3C1248,160,1344,160,1392,160L1440,160L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"></path></svg>');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.1;
+    }
+    
+    .hero-content {
+      max-width: 800px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .hero h2 {
+      font-size: 3.5rem;
+      margin-bottom: 1.5rem;
+      font-weight: 700;
+    }
+    
+    .hero p {
+      font-size: 1.3rem;
+      margin-bottom: 2.5rem;
+      opacity: 0.9;
+    }
+    
+    .hero-btns {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+    }
+    
+    .btn {
+      padding: 14px 30px;
+      border-radius: 8px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .btn-primary {
+      background: var(--accent);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background: #2563eb;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+    
+    .btn-secondary {
+      background: transparent;
+      color: white;
+      border: 2px solid white;
+    }
+    
+    .btn-secondary:hover {
+      background: white;
+      color: var(--primary);
+      transform: translateY(-3px);
+    }
+    
+    /* Stats Section */
+    .stats {
+      background: white;
+      padding: 4rem 0;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+    
+    .stats-container {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+    
+    .stat-item {
+      text-align: center;
+      flex: 1;
+      min-width: 200px;
+    }
+    
+    .stat-number {
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+    
+    .stat-label {
+      font-size: 1.1rem;
+      color: var(--gray);
+    }
+    
+    /* Section Styles */
+    section {
+      padding: 5rem 0;
+    }
+    
+    section h2 {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 3rem;
+      color: var(--primary);
+      position: relative;
+    }
+    
+    section h2::after {
+      content: '';
+      position: absolute;
+      width: 80px;
+      height: 4px;
+      background: var(--accent);
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 2px;
+    }
+    
+    /* About Section */
+    .subsections {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+    
+    .subsection {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+    }
+    
+    .subsection:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .subsection h3 {
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .subsection h3 i {
+      color: var(--accent);
+    }
+    
+    .subsection p {
+      color: var(--gray);
+    }
+    
+    /* Lectures Section */
+    #lectures {
+      background: var(--background);
+    }
+    
+    /* Support Section */
+    #support {
+      text-align: center;
+    }
+    
+    #support > p {
+      max-width: 700px;
+      margin: 0 auto 3rem;
+      font-size: 1.1rem;
+      color: var(--gray);
+    }
+    
+    .pricing-cards {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-bottom: 3rem;
+    }
+    
+    .pricing-card {
+      background: white;
+      border-radius: 12px;
+      padding: 2.5rem 2rem;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      flex: 1;
+      min-width: 280px;
+      max-width: 350px;
+      transition: transform 0.3s;
+      border: 1px solid #eee;
+      position: relative;
+    }
+    
+    .pricing-card:hover {
+      transform: translateY(-10px);
+    }
+    
+    .pricing-card.popular {
+      border: 2px solid var(--accent);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .pricing-card.popular::before {
+      content: 'MOST POPULAR';
+      position: absolute;
+      top: 15px;
+      right: -30px;
+      background: var(--accent);
+      color: white;
+      padding: 5px 30px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      transform: rotate(45deg);
+    }
+    
+    .pricing-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: var(--primary);
+    }
+    
+    .price {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+    }
+    
+    .price span {
+      font-size: 1rem;
+      color: var(--gray);
+    }
+    
+    .features {
+      list-style: none;
+      margin-bottom: 2rem;
+      text-align: left;
+    }
+    
+    .features li {
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .features li i {
+      color: var(--success);
+    }
+    
+    .features li i.fa-times {
+      color: var(--gray);
+      opacity: 0.5;
+    }
+    
+    .pricing-btn {
+      width: 100%;
+      padding: 12px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .pricing-btn:hover {
+      background: var(--secondary);
+    }
+    
+    /* Free Plan Button */
+    .free-btn {
+      width: 100%;
+      padding: 12px;
+      background: var(--success);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .free-btn:hover {
+      background: #0d966c;
+    }
+    
+    /* Trial Button */
+    .trial-btn {
+      width: 100%;
+      padding: 12px;
+      background: transparent;
+      color: var(--primary);
+      border: 2px solid var(--primary);
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 10px;
+    }
+    
+    .trial-btn:hover {
+      background: var(--primary);
+      color: white;
+    }
+    
+    .pricing-card.popular .trial-btn {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+    
+    .pricing-card.popular .trial-btn:hover {
+      background: var(--accent);
+      color: white;
+    }
+    
+    /* Testimonials */
+    .testimonials {
+      background: var(--primary);
+      color: white;
+      padding: 5rem 0;
+    }
+    
+    .testimonials h2 {
+      color: white;
+    }
+    
+    .testimonials-container {
+      display: flex;
+      gap: 2rem;
+      overflow-x: auto;
+      padding: 2rem 0;
+      scrollbar-width: thin;
+    }
+    
+    .testimonial {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 2rem;
+      border-radius: 12px;
+      min-width: 300px;
+      flex: 1;
+      backdrop-filter: blur(10px);
+    }
+    
+    .testimonial-text {
+      font-style: italic;
+      margin-bottom: 1.5rem;
+    }
+    
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .author-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+    
+    .author-details h4 {
+      font-weight: 600;
+    }
+    
+    .author-details p {
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+    
+    /* Clients Section */
+    .clients {
+      padding: 4rem 0;
+      background: white;
+    }
+    
+    .clients h2 {
+      margin-bottom: 2rem;
+    }
+    
+    .clients-container {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+    
+    .client-logo {
+      opacity: 0.6;
+      transition: opacity 0.3s;
+      filter: grayscale(100%);
+      max-width: 150px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: var(--primary);
+      background: var(--background);
+      padding: 0 20px;
+      border-radius: 8px;
+    }
+    
+    .client-logo:hover {
+      opacity: 1;
+      filter: grayscale(0);
+    }
+    
+    /* Newsletter */
+    .newsletter {
+      background: var(--background);
+      padding: 4rem 0;
+      text-align: center;
+    }
+    
+    .newsletter-content {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    .newsletter p {
+      margin-bottom: 2rem;
+      color: var(--gray);
+    }
+    
+    .newsletter-form {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .newsletter-form input {
+      flex: 1;
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+    
+    .newsletter-form button {
+      padding: 12px 25px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .newsletter-form button:hover {
+      background: var(--secondary);
+    }
+    
+    .privacy-note {
+      font-size: 0.8rem;
+      color: var(--gray);
+    }
+    
+    /* Footer */
+    footer {
+      background: var(--dark);
+      color: white;
+      padding: 4rem 0 2rem;
+    }
+    
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 3rem;
+      margin-bottom: 3rem;
+    }
+    
+    .footer-column h3 {
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      padding-bottom: 10px;
+    }
+    
+    .footer-column h3::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 40px;
+      height: 2px;
+      background: var(--accent);
+    }
+    
+    .footer-links {
+      list-style: none;
+    }
+    
+    .footer-links li {
+      margin-bottom: 0.8rem;
+    }
+    
+    .footer-links a {
+      color: #cbd5e1;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    
+    .footer-links a:hover {
+      color: white;
+    }
+    
+    .footer-social {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    
+    .footer-social a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      color: white;
+      transition: all 0.3s;
+    }
+    
+    .footer-social a:hover {
+      background: var(--accent);
+      transform: translateY(-3px);
+    }
+    
+    .footer-bottom {
+      text-align: center;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .modal-content {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      max-width: 500px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+    }
+    
+    .close-modal {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--gray);
+    }
+    
+    .payment-details {
+      background: var(--background);
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin: 1.5rem 0;
+    }
+    
+    .payment-details h4 {
+      margin-bottom: 1rem;
+      color: var(--primary);
+    }
+    
+    .payment-info {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 0.8rem;
+    }
+    
+    .payment-info strong {
+      color: var(--primary);
+    }
+    
+    /* Detail Page Styles */
+    .detail-page {
+      display: none;
+      padding: 7rem 0 3rem;
+    }
+    
+    .detail-page h2 {
+      text-align: left;
+      margin-bottom: 1.5rem;
+    }
+    
+    .detail-page h2::after {
+      left: 0;
+      transform: none;
+    }
+    
+    .back-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 2rem;
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    
+    .detail-content {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 900px) {
+      .nav-links, .auth-btn {
+        display: none;
+      }
+      
+      .mobile-menu-btn {
+        display: block;
+      }
+      
+      .hero h2 {
+        font-size: 2.5rem;
+      }
+      
+      .hero p {
+        font-size: 1.1rem;
+      }
+      
+      .hero-btns {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .stats-container {
+        flex-direction: column;
+        gap: 3rem;
+      }
+    }
+    
+    @media (max-width: 576px) {
+      .logo h1 {
+        font-size: 1.5rem;
+      }
+      
+      .hero {
+        padding: 7rem 0 4rem;
+      }
+      
+      .hero h2 {
+        font-size: 2rem;
+      }
+      
+      section h2 {
+        font-size: 2rem;
+      }
+      
+      .pricing-cards {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .newsletter-form {
+        flex-direction: column;
+      }
+      
+      .payment-info {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    /* Animation for stats */
+    @keyframes countUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .animated-stat {
+      animation: countUp 1s ease forwards;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header & Navigation -->
+  <header>
+    <div class="container">
+      <nav>
+        <div class="logo">
+          <i class="fas fa-shield-alt logo-icon"></i>
+          <h1>ANGELSUCCESS</h1>
+        </div>
+        
+        <ul class="nav-links">
+          <li><a href="#about">About</a></li>
+          <li><a href="#lectures">Lectures</a></li>
+          <li><a href="#support">Pricing</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+        
+        <!-- FIXED: Changed from signup.html to /auth -->
+        <a href="/auth" class="auth-btn">Sign Up / Login</a>
+        
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+          <i class="fas fa-bars"></i>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <ul class="mobile-nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#lectures">Lectures</a></li>
+      <li><a href="#support">Pricing</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="/auth" class="auth-btn" style="display: inline-block; margin-top: 1rem;">Sign Up / Login</a></li>
+    </ul>
+  </div>
+
+  <!-- Main Content -->
+  <main id="main-content">
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="container hero-content">
+        <h2>AI-Powered Cybersecurity Solutions</h2>
+        <p>Protecting your digital assets with advanced threat detection and real-time response</p>
+        <div class="hero-btns">
+          <a href="#support" class="btn btn-primary"><i class="fas fa-shield-alt"></i> Get Protected</a>
+          <a href="#about" class="btn btn-secondary"><i class="fas fa-play-circle"></i> Learn More</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+      <div class="container stats-container">
+        <div class="stat-item">
+          <div class="stat-number" id="clientsCount">0</div>
+          <div class="stat-label">Protected Clients</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" id="threatsCount">0</div>
+          <div class="stat-label">Threats Detected</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" id="uptimeCount">0</div>
+          <div class="stat-label">% System Uptime</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" id="responseCount">0</div>
+          <div class="stat-label">Response Time (ms)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 1: About the Company -->
+    <section id="about">
+      <div class="container">
+        <h2>About ANGELSUCCESS</h2>
+        <div class="subsections">
+          <div class="subsection" data-detail="who-we-are">
+            <h3><i class="fas fa-users"></i> 1. Who We Are</h3>
+            <p>ANGELSUCCESS is a leading cybersecurity firm specializing in AI-powered threat detection and prevention. Our team of experts combines decades of experience in cybersecurity with cutting-edge artificial intelligence technology.</p>
+          </div>
+          <div class="subsection" data-detail="our-mission">
+            <h3><i class="fas fa-bullseye"></i> 2. Our Mission</h3>
+            <p>To provide unparalleled cybersecurity solutions that empower businesses to operate safely in the digital landscape, protecting their assets, data, and reputation from evolving threats.</p>
+          </div>
+          <div class="subsection" data-detail="our-vision">
+            <h3><i class="fas fa-eye"></i> 3. Our Vision</h3>
+            <p>We envision a digital world where organizations can thrive without fear of cyber threats, enabled by proactive, intelligent security systems that anticipate and neutralize risks before they materialize.</p>
+          </div>
+          <div class="subsection" data-detail="core-values">
+            <h3><i class="fas fa-gem"></i> 4. Core Values</h3>
+            <p>Excellence, Innovation, Integrity, and Responsibility guide everything we do. We're committed to staying ahead of threats through continuous research and development.</p>
+          </div>
+          <div class="subsection" data-detail="our-team">
+            <h3><i class="fas fa-user-tie"></i> 5. Our Team</h3>
+            <p>Our diverse team includes cybersecurity experts, data scientists, AI researchers, and ethical hackers who work together to create robust defense systems for our clients.</p>
+          </div>
+          <div class="subsection" data-detail="global-impact">
+            <h3><i class="fas fa-globe"></i> 6. Global Impact</h3>
+            <p>With clients in over 30 countries, we're making a significant impact on global cybersecurity, protecting businesses of all sizes from Fortune 500 companies to startups.</p>
+          </div>
+          <div class="subsection" data-detail="partnerships">
+            <h3><i class="fas fa-handshake"></i> 7. Partnerships</h3>
+            <p>We collaborate with industry leaders, academic institutions, and government agencies to stay at the forefront of cybersecurity innovation and threat intelligence.</p>
+          </div>
+          <div class="subsection" data-detail="innovation">
+            <h3><i class="fas fa-lightbulb"></i> 8. Innovation</h3>
+            <p>Our R&D department continuously develops new algorithms and techniques to detect emerging threats, leveraging machine learning and behavioral analysis.</p>
+          </div>
+          <div class="subsection" data-detail="security-standards">
+            <h3><i class="fas fa-certificate"></i> 9. Security Standards</h3>
+            <p>We adhere to the highest security standards and compliance requirements, including ISO 27001, NIST, and GDPR, ensuring our solutions meet rigorous quality benchmarks.</p>
+          </div>
+          <div class="subsection" data-detail="why-choose-us">
+            <h3><i class="fas fa-star"></i> 10. Why Choose Us</h3>
+            <p>Combining cutting-edge AI technology with human expertise, we offer a unique approach to cybersecurity that provides comprehensive protection with minimal false positives.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: Cybersecurity Lectures -->
+    <section id="lectures">
+      <div class="container">
+        <h2>Cybersecurity Lectures & Training</h2>
+        <div class="subsections">
+          <div class="subsection" data-detail="intro-cybersecurity">
+            <h3><i class="fas fa-lock"></i> 1. Introduction to Cybersecurity</h3>
+            <p>Fundamentals of cybersecurity, threat landscape overview, and basic defense mechanisms for beginners.</p>
+          </div>
+          <div class="subsection" data-detail="networking-basics">
+            <h3><i class="fas fa-network-wired"></i> 2. Networking Basics</h3>
+            <p>Understanding network protocols, architecture, and security measures to protect data in transit.</p>
+          </div>
+          <div class="subsection" data-detail="linux-security">
+            <h3><i class="fab fa-linux"></i> 3. Linux for Security</h3>
+            <p>Leveraging Linux systems for security operations, including command line tools and system hardening.</p>
+          </div>
+          <div class="subsection" data-detail="threat-intelligence">
+            <h3><i class="fas fa-brain"></i> 4. Threat Intelligence</h3>
+            <p>Collecting, analyzing, and applying threat intelligence to proactively defend against cyber attacks.</p>
+          </div>
+          <div class="subsection" data-detail="penetration-testing">
+            <h3><i class="fas fa-search"></i> 5. Penetration Testing</h3>
+            <p>Ethical hacking techniques to identify vulnerabilities and strengthen security posture.</p>
+          </div>
+          <div class="subsection" data-detail="secure-coding">
+            <h3><i class="fas fa-code"></i> 6. Secure Coding Practices</h3>
+            <p>Developing software with security in mind to prevent common vulnerabilities and exploits.</p>
+          </div>
+          <div class="subsection" data-detail="malware-analysis">
+            <h3><i class="fas fa-virus"></i> 7. Malware Analysis</h3>
+            <p>Reverse engineering malicious software to understand its behavior and develop countermeasures.</p>
+          </div>
+          <div class="subsection" data-detail="digital-forensics">
+            <h3><i class="fas fa-search-dollar"></i> 8. Digital Forensics</h3>
+            <p>Investigating cyber incidents, collecting evidence, and analyzing digital artifacts for legal purposes.</p>
+          </div>
+          <div class="subsection" data-detail="cloud-security">
+            <h3><i class="fas fa-cloud"></i> 9. Cloud Security</h3>
+            <p>Securing cloud infrastructure, applications, and data in various cloud service models.</p>
+          </div>
+          <div class="subsection" data-detail="advanced-threat-detection">
+            <h3><i class="fas fa-robot"></i> 10. Advanced Threat Detection</h3>
+            <p>Using AI and machine learning to identify sophisticated threats and zero-day attacks.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+      <div class="container">
+        <h2>What Our Clients Say</h2>
+        <div class="testimonials-container">
+          <div class="testimonial">
+            <div class="testimonial-text">
+              "ANGELSUCCESS's AI-driven threat detection has reduced our false positives by 85% while improving our security posture significantly. Their platform is a game-changer."
+            </div>
+            <div class="testimonial-author">
+              <div class="author-avatar">JS</div>
+              <div class="author-details">
+                <h4>John Smith</h4>
+                <p>CTO, TechCorp International</p>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial">
+            <div class="testimonial-text">
+              "The training programs are exceptional. Our team now identifies and responds to threats twice as fast thanks to ANGELSUCCESS's comprehensive cybersecurity lectures."
+            </div>
+            <div class="testimonial-author">
+              <div class="author-avatar">AD</div>
+              <div class="author-details">
+                <h4>Amanda Davis</h4>
+                <p>Security Director, Financial Services Inc.</p>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial">
+            <div class="testimonial-text">
+              "Implementation was seamless, and the results were immediate. We've prevented three major attacks in the first month alone using their advanced detection system."
+            </div>
+            <div class="testimonial-author">
+              <div class="author-avatar">MR</div>
+              <div class="author-details">
+                <h4>Michael Rodriguez</h4>
+                <p>IT Manager, Healthcare Solutions Group</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: Support & Payment -->
+    <section id="support">
+      <div class="container">
+        <h2>Our Security Plans</h2>
+        <p>Choose the protection plan that fits your organization's needs. All plans include 24/7 monitoring and support.</p>
+
+        <div class="pricing-cards">
+          <!-- Free Plan -->
+          <div class="pricing-card">
+            <h3>Free Plan</h3>
+            <div class="price">$0 <span>/month</span></div>
+            <ul class="features">
+              <li><i class="fas fa-check"></i> Basic Threat Monitoring</li>
+              <li><i class="fas fa-check"></i> Limited Threat Detection</li>
+              <li><i class="fas fa-check"></i> Community Support</li>
+              <li><i class="fas fa-check"></i> Monthly Security Reports</li>
+              <li><i class="fas fa-times"></i> Advanced AI Analysis</li>
+              <li><i class="fas fa-times"></i> Priority Response</li>
+            </ul>
+            <!-- FIXED: Changed to /free-access -->
+            <button class="free-btn" onclick="window.location.href='/free-access'">Get Free Access</button>
+          </div>
+          
+          <div class="pricing-card">
+            <h3>Basic Protection</h3>
+            <div class="price">$10 <span>/month</span></div>
+            <ul class="features">
+              <li><i class="fas fa-check"></i> Real-time Threat Monitoring</li>
+              <li><i class="fas fa-check"></i> Basic Threat Detection</li>
+              <li><i class="fas fa-check"></i> Email Support</li>
+              <li><i class="fas fa-check"></i> Weekly Security Reports</li>
+              <li><i class="fas fa-times"></i> Advanced AI Analysis</li>
+              <li><i class="fas fa-times"></i> Priority Response</li>
+            </ul>
+            <button class="pricing-btn" onclick="showPaymentModal('Basic Protection', 10)">Get Started</button>
+            <!-- FIXED: Changed to /auth -->
+            <button class="trial-btn" onclick="window.location.href='/auth'">Start 14-Day Trial</button>
+          </div>
+          
+          <!-- Professional Plan (Most Popular) -->
+          <div class="pricing-card popular">
+            <h3>Professional Suite</h3>
+            <div class="price">$49 <span>/month</span></div>
+            <ul class="features">
+              <li><i class="fas fa-check"></i> Advanced Threat Monitoring</li>
+              <li><i class="fas fa-check"></i> AI-Powered Threat Detection</li>
+              <li><i class="fas fa-check"></i> 24/7 Priority Support</li>
+              <li><i class="fas fa-check"></i> Real-time Security Reports</li>
+              <li><i class="fas fa-check"></i> Advanced AI Analysis</li>
+              <li><i class="fas fa-check"></i> Priority Response</li>
+            </ul>
+            <button class="pricing-btn" onclick="showPaymentModal('Professional Suite', 49)">Get Protected</button>
+            <!-- FIXED: Changed to /auth -->
+            <button class="trial-btn" onclick="window.location.href='/auth'">Start 30-Day Trial</button>
+          </div>
+          
+          <!-- Enterprise Plan -->
+          <div class="pricing-card">
+            <h3>Enterprise Solution</h3>
+            <div class="price">$199 <span>/month</span></div>
+            <ul class="features">
+              <li><i class="fas fa-check"></i> Comprehensive Monitoring</li>
+              <li><i class="fas fa-check"></i> Advanced AI Threat Detection</li>
+              <li><i class="fas fa-check"></i> Dedicated 24/7 Support</li>
+              <li><i class="fas fa-check"></i> Custom Security Reports</li>
+              <li><i class="fas fa-check"></i> Enterprise AI Analysis</li>
+              <li><i class="fas fa-check"></i> Instant Response Team</li>
+            </ul>
+            <button class="pricing-btn" onclick="showPaymentModal('Enterprise Solution', 199)">Contact Sales</button>
+            <!-- FIXED: Changed to /auth -->
+            <button class="trial-btn" onclick="window.location.href='/auth'">Request Demo</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Clients Section -->
+    <section class="clients">
+      <div class="container">
+        <h2>Trusted by Industry Leaders</h2>
+        <div class="clients-container">
+          <div class="client-logo">TechCorp</div>
+          <div class="client-logo">FinSecure</div>
+          <div class="client-logo">DataShield</div>
+          <div class="client-logo">CloudSafe</div>
+          <div class="client-logo">NetProtect</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter">
+      <div class="container">
+        <div class="newsletter-content">
+          <h2>Stay Updated on Cybersecurity Threats</h2>
+          <p>Subscribe to our newsletter for the latest security insights, threat intelligence, and product updates.</p>
+          <form class="newsletter-form" id="newsletterForm">
+            <input type="email" placeholder="Enter your email address" required>
+            <button type="submit">Subscribe</button>
+          </form>
+          <p class="privacy-note">We respect your privacy. Your information will never be shared with third parties.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer id="contact">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-column">
+          <h3>About Us</h3>
+          <p>ANGELSUCCESS provides cutting-edge AI-powered cybersecurity solutions to protect businesses from evolving digital threats.</p>
+          <div class="footer-social">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#"><i class="fab fa-github"></i></a>
+          </div>
+        </div>
+        
+        <div class="footer-column">
+          <h3>Quick Links</h3>
+          <ul class="footer-links">
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#lectures">Training</a></li>
+            <li><a href="#support">Pricing</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Careers</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-column">
+          <h3>Services</h3>
+          <ul class="footer-links">
+            <li><a href="#">Threat Detection</a></li>
+            <li><a href="#">Vulnerability Assessment</a></li>
+            <li><a href="#">Incident Response</a></li>
+            <li><a href="#">Security Training</a></li>
+            <li><a href="#">Compliance Consulting</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-column">
+          <h3>Contact Us</h3>
+          <ul class="footer-links">
+            <li><i class="fas fa-map-marker-alt"></i> 123 Security Ave, Cyber City</li>
+            <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
+            <li><i class="fas fa-envelope"></i> info@angelsuccess.com</li>
+            <li><i class="fas fa-clock"></i> 24/7 Support Available</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2025 ANGELSUCCESS. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Payment Modal -->
+  <div class="modal" id="paymentModal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeModal()">&times;</span>
+      <h2>Complete Your Purchase</h2>
+      <p>You've selected: <strong id="selectedPlan">Professional Suite</strong></p>
+      
+      <div class="payment-details">
+        <h4>Payment Information</h4>
+        <div class="payment-info">
+          <strong>Plan:</strong> <span id="planName">Professional Suite</span>
+          <strong>Amount:</strong> $<span id="planPrice">49</span>/month
+          <strong>Billing Cycle:</strong> Monthly
+          <strong>Payment Methods:</strong> Credit Card, PayPal, Crypto
+        </div>
+      </div>
+      
+      <form id="paymentForm">
+        <div style="margin-bottom: 1rem;">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" placeholder="Your email" required style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ddd; border-radius: 4px;">
+        </div>
+        
+        <div style="margin-bottom: 1rem;">
+          <label for="card">Credit Card Information</label>
+          <input type="text" id="card" placeholder="Card number" required style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ddd; border-radius: 4px;">
+        </div>
+        
+        <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
+          <div style="flex: 1;">
+            <label for="expiry">Expiry Date</label>
+            <input type="text" id="expiry" placeholder="MM/YY" required style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ddd; border-radius: 4px;">
+          </div>
+          <div style="flex: 1;">
+            <label for="cvc">CVC</label>
+            <input type="text" id="cvc" placeholder="123" required style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ddd; border-radius: 4px;">
+          </div>
+        </div>
+        
+        <button type="submit" class="pricing-btn" style="width: 100%;">Complete Payment</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Detail Pages -->
+  <div id="detail-pages">
+    <!-- This is where detail pages will be loaded -->
+  </div>
+
+  <script>
+    // Mobile menu functionality
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    mobileMenuBtn.addEventListener('click', function() {
+      mobileMenu.classList.toggle('active');
+    });
+
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', function(event) {
+      if (!event.target.closest('.mobile-menu') && !event.target.closest('.mobile-menu-btn')) {
+        mobileMenu.classList.remove('active');
+      }
+    });
+
+    // Stats counter animation
+    function animateValue(id, start, end, duration) {
+      const obj = document.getElementById(id);
+      let startTimestamp = null;
+      const step = (timestamp) => {
+        if (!startTimestamp) startTimestamp = timestamp;
+        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+        const value = Math.floor(progress * (end - start) + start);
+        obj.innerHTML = value.toLocaleString();
+        if (progress < 1) {
+          window.requestAnimationFrame(step);
+        }
+      };
+      window.requestAnimationFrame(step);
+    }
+
+    // Initialize stats animation when in viewport
+    document.addEventListener('DOMContentLoaded', function() {
+      // Animate stats
+      setTimeout(() => {
+        animateValue('clientsCount', 0, 5244, 2000);
+        animateValue('threatsCount', 0, 28761, 2000);
+        animateValue('uptimeCount', 0, 99.9, 2000);
+        animateValue('responseCount', 0, 24, 2000);
+      }, 500);
+
+      // Add click events to subsections
+      document.querySelectorAll('.subsection').forEach(item => {
+        item.addEventListener('click', function() {
+          const detail = this.getAttribute('data-detail');
+          showDetailPage(detail);
+        });
+      });
+
+      // Newsletter form submission
+      document.getElementById('newsletterForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        alert('Thank you for subscribing to our newsletter!');
+        this.reset();
+      });
+    });
+
+    // Show payment modal
+    function showPaymentModal(planName, planPrice) {
+      document.getElementById('selectedPlan').textContent = planName;
+      document.getElementById('planName').textContent = planName;
+      document.getElementById('planPrice').textContent = planPrice;
+      document.getElementById('paymentModal').style.display = 'flex';
+    }
+
+    // Close modal
+    function closeModal() {
+      document.getElementById('paymentModal').style.display = 'none';
+    }
+
+    // Show detail page
+    function showDetailPage(detailId) {
+      // Hide main content
+      document.getElementById('main-content').style.display = 'none';
+      
+      // Create and show detail page
+      const detailPages = document.getElementById('detail-pages');
+      detailPages.innerHTML = `
+        <div class="detail-page" id="${detailId}-page">
+          <div class="container">
+            <a href="javascript:void(0)" class="back-button" onclick="goBack()">
+              <i class="fas fa-arrow-left"></i> Back to Overview
+            </a>
+            <h2>${detailId.replace(/-/g, ' ').toUpperCase()}</h2>
+            <div class="detail-content">
+              <p>This is the detailed view for ${detailId.replace(/-/g, ' ')}. Here you would find comprehensive information about this topic.</p>
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod, nisl eget ultricies ultricies, nunc nisl aliquam nunc, eget aliquam nisl nunc eget nisl.</p>
+              <p>Sed vitae nisl eget nunc aliquam ultricies. Nullam euismod, nisl eget ultricies ultricies, nunc nisl aliquam nunc, eget aliquam nisl nunc eget nisl.</p>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      document.getElementById(`${detailId}-page`).style.display = 'block';
+    }
+
+    // Go back to main content
+    function goBack() {
+      document.getElementById('main-content').style.display = 'block';
+      document.getElementById('detail-pages').innerHTML = '';
+    }
+
+    // Close modal if clicked outside
+    window.onclick = function(event) {
+      const modal = document.getElementById('paymentModal');
+      if (event.target == modal) {
+        closeModal();
+      }
+    }
+
+    // Form submission
+    document.getElementById('paymentForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Payment processed successfully! Redirecting to your dashboard...');
+      window.location.href = '/auth';
+    });
+  </script>
+</body>
+</html>

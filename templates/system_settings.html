@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Settings - ANGELSUCCESS Cybersecurity</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-light: #3b82f6;
+            --secondary: #1e40af;
+            --danger: #dc2626;
+            --warning: #d97706;
+            --success: #059669;
+            --success-light: #10b981;
+            --info: #0891b2;
+            --dark: #1f2937;
+            --dark-light: #374151;
+            --text-light: #e5e7eb;
+            --text-muted: #9ca3af;
+            --card-bg: rgba(30, 41, 59, 0.8);
+            --card-border: rgba(51, 65, 85, 0.5);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: var(--text-light);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        
+        .navbar {
+            background: rgba(30, 41, 59, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            border-bottom: 1px solid var(--card-border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #60a5fa;
+        }
+        
+        .logo i {
+            font-size: 1.8rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+        }
+        
+        .nav-links a:hover {
+            color: #60a5fa;
+            background: rgba(96, 165, 250, 0.1);
+        }
+        
+        .nav-links a.active {
+            color: #60a5fa;
+            background: rgba(96, 165, 250, 0.15);
+        }
+        
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .page-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.75rem;
+        }
+        
+        .page-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .settings-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        
+        .settings-section {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: var(--transition);
+        }
+        
+        .settings-section:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--card-border);
+        }
+        
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+        
+        .section-icon {
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
+        
+        .section-badge {
+            background: rgba(37, 99, 235, 0.2);
+            color: var(--primary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .setting-item {
+            margin: 1.25rem 0;
+            padding: 1.25rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+        
+        .setting-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .setting-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+        
+        .setting-label {
+            font-weight: 500;
+            font-size: 1.05rem;
+        }
+        
+        .setting-description {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 54px;
+            height: 28px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #334155;
+            transition: var(--transition);
+            border-radius: 28px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: var(--transition);
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        input:checked + .slider {
+            background-color: var(--success);
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        .select-wrapper {
+            position: relative;
+            display: inline-block;
+            width: 200px;
+        }
+        
+        .select-wrapper select {
+            width: 100%;
+            background: var(--dark-light);
+            color: var(--text-light);
+            border: 1px solid var(--card-border);
+            border-radius: 6px;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            appearance: none;
+            cursor: pointer;
+        }
+        
+        .select-wrapper::after {
+            content: '\f078';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+        
+        .range-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            width: 100%;
+        }
+        
+        .range-slider {
+            flex: 1;
+            -webkit-appearance: none;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--dark-light);
+            outline: none;
+        }
+        
+        .range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .range-value {
+            min-width: 40px;
+            text-align: center;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        
+        .info-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        
+        .info-value {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background: var(--primary);
+            color: white;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            font-size: 1rem;
+        }
+        
+        .btn:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3);
+        }
+        
+        .btn-success {
+            background: var(--success);
+        }
+        
+        .btn-success:hover {
+            background: var(--success-light);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background: rgba(37, 99, 235, 0.1);
+        }
+        
+        .btn-danger {
+            background: var(--danger);
+        }
+        
+        .btn-danger:hover {
+            background: #ef4444;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--card-border);
+        }
+        
+        .backup-section {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            transition: var(--transition);
+        }
+        
+        .backup-section:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .backup-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .backup-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .backup-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        
+        .backup-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        
+        .backup-value {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 1024px) {
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+            }
+            
+            .nav-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-links {
+                gap: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .main-container {
+                padding: 1rem;
+            }
+            
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .page-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .backup-actions {
+                flex-direction: column;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <span>ANGELSUCCESS AI Cybersecurity</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="/network-monitor"><i class="fas fa-network-wired"></i> Network Monitor</a></li>
+                <li><a href="/ai-analysis"><i class="fas fa-robot"></i> AI Analysis</a></li>
+                <li><a href="/threat-intelligence"><i class="fas fa-bug"></i> Threat Intelligence</a></li>
+                <li><a href="/optimization-center"><i class="fas fa-cogs"></i> Optimization</a></li>
+                <li><a href="/system-settings" class="active"><i class="fas fa-sliders-h"></i> Settings</a></li>
+                <li><a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="page-header">
+            <h1 class="page-title">
+                <i class="fas fa-sliders-h"></i>
+                System Settings
+            </h1>
+            <div class="page-actions">
+                <button class="btn btn-outline" onclick="exportSettings()">
+                    <i class="fas fa-download"></i> Export Settings
+                </button>
+                <button class="btn" onclick="resetToDefaults()">
+                    <i class="fas fa-undo"></i> Reset Defaults
+                </button>
+            </div>
+        </div>
+        
+        <div class="settings-grid">
+            <div>
+                <div class="settings-section">
+                    <div class="section-header">
+                        <h3 class="section-title">
+                            <i class="fas fa-robot section-icon"></i>
+                            AI Model Settings
+                        </h3>
+                        <span class="section-badge">Active</span>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-header">
+                            <div>
+                                <div class="setting-label">Supervised Learning</div>
+                                <div class="setting-description">Enable supervised machine learning models for threat detection</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="supervisedLearning" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-header">
+                            <div>
+                                <div class="setting-label">Unsupervised Learning</div>
+                                <div class="setting-description">Enable unsupervised anomaly detection algorithms</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="unsupervisedLearning" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-header">
+                            <div>
+                                <div class="setting-label">Ensemble Model</div>
+                                <div class="setting-description">Combine multiple models for improved accuracy</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="ensembleModel" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-header">
+                            <div>
+                                <div class="setting-label">Auto Training</div>
+                                <div class="setting-description">Automatically retrain models with new data</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="autoTraining">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <div class="section-header">
+                        <h3 class="section-title">
+                            <i class="fas fa-shield-alt section-icon"></i>
+                            Security Settings
+                        </h3>
+                        <span class="section-badge">High</span>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-header">
+                            <div>
+                                <div class="setting-label">Threat Detection Level</div>
+                                <div class="setting-description">Set sensitivity for threat detection algorithms</div>
+                            </div>
+                            <div class="select-wrapper">
+                                <select id="threatDetectionLevel">
+                                    <option value="high">High</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="low">Low</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-header">
+                            <div>
+                                <div class="setting-label">Auto Mitigation</div>
+                                <div class="setting-description">Automatically respond to detected threats</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="autoMitigation" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-header">
+                            <div>
+                                <div class="setting-label">False Positive Tuning</div>
+                                <div class="setting-description">Automatically adjust to reduce false positives</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="falsePositiveTuning" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="settings-section">
+                    <div class="section-header">
+                        <h3 class="section-title">
+                            <i class="fas fa-tachometer-alt section-icon"></i>
+                            Performance Settings
+                        </h3>
+                        <span class="section-badge">Optimized</span>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-header">
+                            <div>
+                                <div class="setting-label">Auto Optimization</div>
+                                <div class="setting-description">Automatically optimize system performance</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="autoOptimization" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-header">
+                            <div>
+                                <div class="setting-label">Resource Monitoring</div>
+                                <div class="setting-description">Monitor system resources in real-time</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="resourceMonitoring" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-header">
+                            <div>
+                                <div class="setting-label">Alert Threshold</div>
+                                <div class="setting-description">Set threshold for system performance alerts</div>
+                            </div>
+                            <div class="range-container">
+                                <input type="range" min="50" max="95" value="85" class="range-slider" id="alertThreshold">
+                                <span class="range-value" id="thresholdValue">85%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <div class="section-header">
+                        <h3 class="section-title">
+                            <i class="fas fa-info-circle section-icon"></i>
+                            System Information
+                        </h3>
+                        <span class="section-badge">v2.1.5</span>
+                    </div>
+                    
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">System Version</span>
+                            <span class="info-value">v2.1.5</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Last Updated</span>
+                            <span class="info-value" id="lastUpdated">Loading...</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Database Size</span>
+                            <span class="info-value" id="dbSize">Loading...</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Active Users</span>
+                            <span class="info-value" id="activeUsers">Loading...</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Uptime</span>
+                            <span class="info-value" id="systemUptime">Loading...</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">AI Models</span>
+                            <span class="info-value" id="aiModelsCount">3</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-success" onclick="saveSettings()">
+                        <i class="fas fa-save"></i> Save Settings
+                    </button>
+                    <button class="btn btn-outline" onclick="testSettings()">
+                        <i class="fas fa-vial"></i> Test Settings
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="backup-section">
+            <div class="section-header">
+                <h3 class="section-title">
+                    <i class="fas fa-database section-icon"></i>
+                    Backup & Restore
+                </h3>
+                <span class="section-badge">Secure</span>
+            </div>
+            
+            <div class="backup-actions">
+                <button class="btn btn-outline" onclick="createBackup()">
+                    <i class="fas fa-plus"></i> Create Backup
+                </button>
+                <button class="btn btn-outline" onclick="restoreBackup()">
+                    <i class="fas fa-history"></i> Restore Backup
+                </button>
+                <button class="btn btn-danger" onclick="resetSystem()">
+                    <i class="fas fa-trash"></i> Reset System
+                </button>
+            </div>
+            
+            <div class="backup-info">
+                <div class="backup-item">
+                    <span class="backup-label">Last Backup</span>
+                    <span class="backup-value" id="lastBackup">Never</span>
+                </div>
+                <div class="backup-item">
+                    <span class="backup-label">Backup Size</span>
+                    <span class="backup-value" id="backupSize">0 MB</span>
+                </div>
+                <div class="backup-item">
+                    <span class="backup-label">Backup Location</span>
+                    <span class="backup-value">/backups/system/</span>
+                </div>
+                <div class="backup-item">
+                    <span class="backup-label">Auto Backup</span>
+                    <span class="backup-value">Disabled</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateSystemInfo() {
+            document.getElementById('lastUpdated').textContent = new Date().toLocaleDateString();
+            document.getElementById('dbSize').textContent = '2.4 GB';
+            document.getElementById('activeUsers').textContent = '1';
+            document.getElementById('systemUptime').textContent = '12 days, 4 hours';
+            document.getElementById('lastBackup').textContent = '2 days ago';
+            document.getElementById('backupSize').textContent = '1.8 GB';
+        }
+
+        function setupEventListeners() {
+            // Update threshold value display
+            const thresholdSlider = document.getElementById('alertThreshold');
+            const thresholdValue = document.getElementById('thresholdValue');
+            
+            thresholdSlider.addEventListener('input', function() {
+                thresholdValue.textContent = this.value + '%';
+            });
+            
+            // Add change listeners to settings
+            const settingsInputs = document.querySelectorAll('input, select');
+            settingsInputs.forEach(input => {
+                input.addEventListener('change', function() {
+                    document.querySelector('.btn-success').innerHTML = '<i class="fas fa-save"></i> Save Settings*';
+                });
+            });
+        }
+
+        async function saveSettings() {
+            // Collect all settings
+            const settings = {
+                ai: {
+                    supervisedLearning: document.getElementById('supervisedLearning').checked,
+                    unsupervisedLearning: document.getElementById('unsupervisedLearning').checked,
+                    ensembleModel: document.getElementById('ensembleModel').checked,
+                    autoTraining: document.getElementById('autoTraining').checked
+                },
+                security: {
+                    threatDetectionLevel: document.getElementById('threatDetectionLevel').value,
+                    autoMitigation: document.getElementById('autoMitigation').checked,
+                    falsePositiveTuning: document.getElementById('falsePositiveTuning').checked
+                },
+                performance: {
+                    autoOptimization: document.getElementById('autoOptimization').checked,
+                    resourceMonitoring: document.getElementById('resourceMonitoring').checked,
+                    alertThreshold: document.getElementById('alertThreshold').value
+                }
+            };
+            
+            try {
+                // In a real application, this would send to the server
+                console.log('Saving settings:', settings);
+                showNotification('Settings saved successfully!', 'success');
+                document.querySelector('.btn-success').innerHTML = '<i class="fas fa-save"></i> Save Settings';
+            } catch (error) {
+                console.error('Error saving settings:', error);
+                showNotification('Failed to save settings', 'error');
+            }
+        }
+
+        function testSettings() {
+            showNotification('Testing current settings configuration...', 'info');
+            // Simulate testing
+            setTimeout(() => {
+                showNotification('Settings test completed successfully!', 'success');
+            }, 2000);
+        }
+
+        function exportSettings() {
+            showNotification('Exporting system settings...', 'info');
+        }
+
+        function resetToDefaults() {
+            if (confirm('Are you sure you want to reset all settings to defaults?')) {
+                // Reset all toggles and selects
+                document.getElementById('supervisedLearning').checked = true;
+                document.getElementById('unsupervisedLearning').checked = true;
+                document.getElementById('ensembleModel').checked = true;
+                document.getElementById('autoTraining').checked = false;
+                document.getElementById('threatDetectionLevel').value = 'high';
+                document.getElementById('autoMitigation').checked = true;
+                document.getElementById('falsePositiveTuning').checked = true;
+                document.getElementById('autoOptimization').checked = true;
+                document.getElementById('resourceMonitoring').checked = true;
+                document.getElementById('alertThreshold').value = 85;
+                document.getElementById('thresholdValue').textContent = '85%';
+                
+                showNotification('Settings reset to defaults', 'success');
+                document.querySelector('.btn-success').innerHTML = '<i class="fas fa-save"></i> Save Settings*';
+            }
+        }
+
+        function createBackup() {
+            showNotification('Creating system backup...', 'info');
+            // Simulate backup creation
+            setTimeout(() => {
+                document.getElementById('lastBackup').textContent = 'Just now';
+                showNotification('System backup created successfully!', 'success');
+            }, 3000);
+        }
+
+        function restoreBackup() {
+            showNotification('Please select a backup file to restore', 'info');
+        }
+
+        function resetSystem() {
+            if (confirm('WARNING: This will reset the entire system to factory defaults. All settings and data will be lost. Are you absolutely sure?')) {
+                showNotification('System reset initiated...', 'warning');
+            }
+        }
+
+        function showNotification(message, type) {
+            // Create a simple notification
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 1rem 1.5rem;
+                border-radius: 8px;
+                color: white;
+                font-weight: 500;
+                z-index: 1000;
+                transition: all 0.3s ease;
+                background: ${type === 'success' ? '#059669' : type === 'error' ? '#dc2626' : type === 'warning' ? '#d97706' : '#0891b2'};
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        async function logout() {
+            try {
+                await fetch('/api/auth/logout', { method: 'POST' });
+                window.location.href = '/auth';
+            } catch (error) {
+                console.error('Error logging out:', error);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updateSystemInfo();
+            setupEventListeners();
+        });
+    </script>
+</body>
+</html>

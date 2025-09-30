@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Monitor - ANGELSUCCESS Cybersecurity</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-light: #3b82f6;
+            --secondary: #1e40af;
+            --danger: #dc2626;
+            --warning: #d97706;
+            --success: #059669;
+            --info: #0891b2;
+            --dark: #1f2937;
+            --dark-light: #374151;
+            --text-light: #e5e7eb;
+            --text-muted: #9ca3af;
+            --card-bg: rgba(30, 41, 59, 0.8);
+            --card-border: rgba(51, 65, 85, 0.5);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: var(--text-light);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        
+        .navbar {
+            background: rgba(30, 41, 59, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            border-bottom: 1px solid var(--card-border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #60a5fa;
+        }
+        
+        .logo i {
+            font-size: 1.8rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+        }
+        
+        .nav-links a:hover {
+            color: #60a5fa;
+            background: rgba(96, 165, 250, 0.1);
+        }
+        
+        .nav-links a.active {
+            color: #60a5fa;
+            background: rgba(96, 165, 250, 0.15);
+        }
+        
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .page-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.75rem;
+        }
+        
+        .page-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--primary);
+        }
+        
+        .stat-card.danger::before {
+            background: var(--danger);
+        }
+        
+        .stat-card.warning::before {
+            background: var(--warning);
+        }
+        
+        .stat-card.success::before {
+            background: var(--success);
+        }
+        
+        .stat-icon {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+            opacity: 0.8;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0.5rem 0;
+        }
+        
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        
+        .stat-trend {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.25rem;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+        }
+        
+        .trend-up {
+            color: var(--success);
+        }
+        
+        .trend-down {
+            color: var(--danger);
+        }
+        
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .chart-container {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            height: 300px;
+            transition: var(--transition);
+        }
+        
+        .chart-container:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .chart-container.full {
+            grid-column: 1 / -1;
+            height: 400px;
+        }
+        
+        .chart-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .chart-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .chart-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .connections-list {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .connections-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .connection-item {
+            padding: 1rem;
+            border-left: 4px solid var(--primary);
+            margin-bottom: 0.75rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 0 8px 8px 0;
+            transition: var(--transition);
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 1rem;
+        }
+        
+        .connection-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateX(5px);
+        }
+        
+        .connection-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        
+        .connection-address {
+            font-weight: 600;
+            font-size: 1.05rem;
+        }
+        
+        .connection-details {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        
+        .connection-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+        }
+        
+        .status-indicator.warning {
+            background: var(--warning);
+        }
+        
+        .status-indicator.danger {
+            background: var(--danger);
+        }
+        
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            background: var(--primary);
+            color: white;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .btn:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background: rgba(37, 99, 235, 0.1);
+        }
+        
+        .btn-danger {
+            background: var(--danger);
+        }
+        
+        .btn-danger:hover {
+            background: #ef4444;
+        }
+        
+        .btn-sm {
+            padding: 0.25rem 0.75rem;
+            font-size: 0.85rem;
+        }
+        
+        .icon-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        
+        .icon-btn:hover {
+            color: var(--text-light);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .filter-bar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .filter-select {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 6px;
+            padding: 0.5rem 1rem;
+            color: var(--text-light);
+            min-width: 150px;
+        }
+        
+        .search-box {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 6px;
+            padding: 0.5rem 1rem;
+            color: var(--text-light);
+            flex-grow: 1;
+            max-width: 300px;
+        }
+        
+        .refresh-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+        
+        .pulse {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(5, 150, 105, 0.7);
+            }
+            
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 10px rgba(5, 150, 105, 0);
+            }
+            
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(5, 150, 105, 0);
+            }
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 1024px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .chart-container.full {
+                grid-column: 1;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+            }
+            
+            .nav-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-links {
+                gap: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .main-container {
+                padding: 1rem;
+            }
+            
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .page-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .connection-item {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <span>ANGELSUCCESS AI Cybersecurity</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="/network-monitor" class="active"><i class="fas fa-network-wired"></i> Network Monitor</a></li>
+                <li><a href="/ai-analysis"><i class="fas fa-robot"></i> AI Analysis</a></li>
+                <li><a href="/threat-intelligence"><i class="fas fa-bug"></i> Threat Intelligence</a></li>
+                <li><a href="/optimization-center"><i class="fas fa-cogs"></i> Optimization</a></li>
+                <li><a href="/system-settings"><i class="fas fa-sliders-h"></i> Settings</a></li>
+                <li><a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="page-header">
+            <h1 class="page-title">
+                <i class="fas fa-network-wired"></i>
+                Network Monitor
+            </h1>
+            <div class="page-actions">
+                <button class="btn btn-outline" onclick="exportData()">
+                    <i class="fas fa-download"></i> Export Data
+                </button>
+                <button class="btn" onclick="refreshData()">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+            </div>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+                <div class="stat-value" id="totalTraffic">0 GB</div>
+                <div class="stat-label">Total Traffic</div>
+                <div class="stat-trend trend-up">
+                    <i class="fas fa-arrow-up"></i> 12% from last hour
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-link"></i>
+                </div>
+                <div class="stat-value" id="activeConnections">0</div>
+                <div class="stat-label">Active Connections</div>
+                <div class="stat-trend trend-down">
+                    <i class="fas fa-arrow-down"></i> 5% from last hour
+                </div>
+            </div>
+            <div class="stat-card danger">
+                <div class="stat-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <div class="stat-value" id="blockedThreats">0</div>
+                <div class="stat-label">Blocked Threats</div>
+                <div class="stat-trend trend-up">
+                    <i class="fas fa-arrow-up"></i> 3 new threats
+                </div>
+            </div>
+            <div class="stat-card warning">
+                <div class="stat-icon">
+                    <i class="fas fa-tachometer-alt"></i>
+                </div>
+                <div class="stat-value" id="networkLatency">0ms</div>
+                <div class="stat-label">Network Latency</div>
+                <div class="stat-trend trend-down">
+                    <i class="fas fa-arrow-down"></i> 8% improvement
+                </div>
+            </div>
+        </div>
+
+        <div class="filter-bar">
+            <select class="filter-select" id="timeRange">
+                <option value="1h">Last 1 Hour</option>
+                <option value="6h">Last 6 Hours</option>
+                <option value="24h" selected>Last 24 Hours</option>
+                <option value="7d">Last 7 Days</option>
+            </select>
+            <select class="filter-select" id="protocolFilter">
+                <option value="all">All Protocols</option>
+                <option value="tcp">TCP</option>
+                <option value="udp">UDP</option>
+                <option value="icmp">ICMP</option>
+                <option value="other">Other</option>
+            </select>
+            <input type="text" class="search-box" placeholder="Search connections..." id="connectionSearch">
+        </div>
+
+        <div class="charts-grid">
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3 class="chart-title">Bandwidth Usage</h3>
+                    <div class="chart-actions">
+                        <button class="icon-btn" title="Toggle data labels">
+                            <i class="fas fa-chart-pie"></i>
+                        </button>
+                    </div>
+                </div>
+                <canvas id="bandwidthChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3 class="chart-title">Packet Flow</h3>
+                    <div class="chart-actions">
+                        <button class="icon-btn" title="Toggle data labels">
+                            <i class="fas fa-chart-bar"></i>
+                        </button>
+                    </div>
+                </div>
+                <canvas id="packetChart"></canvas>
+            </div>
+            <div class="chart-container full">
+                <div class="chart-header">
+                    <h3 class="chart-title">Real-time Network Traffic</h3>
+                    <div class="chart-actions">
+                        <button class="icon-btn" title="Pause updates">
+                            <i class="fas fa-pause"></i>
+                        </button>
+                        <button class="icon-btn" title="Download chart">
+                            <i class="fas fa-download"></i>
+                        </button>
+                    </div>
+                </div>
+                <canvas id="networkFlowChart"></canvas>
+            </div>
+        </div>
+
+        <div class="connections-list">
+            <div class="connections-header">
+                <h3>Active Connections</h3>
+                <div>
+                    <button class="btn btn-sm btn-outline" onclick="showAllConnections()">
+                        <i class="fas fa-eye"></i> Show All
+                    </button>
+                    <button class="btn btn-sm btn-danger" onclick="blockSelected()">
+                        <i class="fas fa-ban"></i> Block Selected
+                    </button>
+                </div>
+            </div>
+            <div id="connectionsContainer"></div>
+            <div class="refresh-indicator">
+                <span class="pulse"></span>
+                <span>Live data updating every 2 seconds</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let networkCharts = {};
+        let updateInterval;
+        let isPaused = false;
+        
+        function initializeNetworkCharts() {
+            // Bandwidth Chart
+            const bandwidthCtx = document.getElementById('bandwidthChart').getContext('2d');
+            networkCharts.bandwidth = new Chart(bandwidthCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Upload', 'Download', 'Available'],
+                    datasets: [{
+                        data: [0, 0, 100],
+                        backgroundColor: ['#2563eb', '#059669', '#334155'],
+                        borderWidth: 0,
+                        hoverOffset: 10
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#e5e7eb',
+                                padding: 15,
+                                usePointStyle: true
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.label}: ${context.raw}%`;
+                                }
+                            }
+                        }
+                    },
+                    cutout: '65%'
+                }
+            });
+
+            // Packet Chart
+            const packetCtx = document.getElementById('packetChart').getContext('2d');
+            networkCharts.packet = new Chart(packetCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['TCP', 'UDP', 'ICMP', 'Other'],
+                    datasets: [{
+                        label: 'Packets/sec',
+                        data: [0, 0, 0, 0],
+                        backgroundColor: [
+                            'rgba(37, 99, 235, 0.8)',
+                            'rgba(5, 150, 105, 0.8)',
+                            'rgba(217, 119, 6, 0.8)',
+                            'rgba(148, 163, 184, 0.8)'
+                        ],
+                        borderColor: [
+                            'rgba(37, 99, 235, 1)',
+                            'rgba(5, 150, 105, 1)',
+                            'rgba(217, 119, 6, 1)',
+                            'rgba(148, 163, 184, 1)'
+                        ],
+                        borderWidth: 1,
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#9ca3af'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#9ca3af'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Network Flow Chart
+            const flowCtx = document.getElementById('networkFlowChart').getContext('2d');
+            networkCharts.flow = new Chart(flowCtx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [
+                        {
+                            label: 'Upload (Mbps)',
+                            data: [],
+                            borderColor: '#2563eb',
+                            backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                            borderWidth: 2,
+                            tension: 0.3,
+                            fill: true
+                        },
+                        {
+                            label: 'Download (Mbps)',
+                            data: [],
+                            borderColor: '#059669',
+                            backgroundColor: 'rgba(5, 150, 105, 0.1)',
+                            borderWidth: 2,
+                            tension: 0.3,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                color: '#e5e7eb',
+                                usePointStyle: true
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#9ca3af'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#9ca3af'
+                            }
+                        }
+                    },
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    }
+                }
+            });
+        }
+
+        function updateNetworkData(data) {
+            if (isPaused) return;
+            
+            // Update stats
+            document.getElementById('totalTraffic').textContent = 
+                (data.network_traffic / 1024).toFixed(1) + ' GB';
+            document.getElementById('activeConnections').textContent = 
+                data.active_connections;
+            document.getElementById('blockedThreats').textContent = 
+                data.total_threats;
+            document.getElementById('networkLatency').textContent = 
+                data.network_latency + 'ms';
+
+            // Update charts
+            if (networkCharts.bandwidth) {
+                const usage = Math.min(90, data.network_traffic / 1000000);
+                networkCharts.bandwidth.data.datasets[0].data = [usage/2, usage/2, 100-usage];
+                networkCharts.bandwidth.update('none');
+            }
+
+            if (networkCharts.packet && data.packet_stats) {
+                networkCharts.packet.data.datasets[0].data = [
+                    data.packet_stats.tcp || 0,
+                    data.packet_stats.udp || 0,
+                    data.packet_stats.icmp || 0,
+                    data.packet_stats.other || 0
+                ];
+                networkCharts.packet.update('none');
+            }
+
+            if (networkCharts.flow && data.network_metrics) {
+                const metrics = data.network_metrics.slice(-20);
+                networkCharts.flow.data.labels = metrics.map(m => {
+                    const date = new Date(m.timestamp);
+                    return date.toLocaleTimeString();
+                });
+                networkCharts.flow.data.datasets[0].data = metrics.map(m => m.bytes_sent / 125000);
+                networkCharts.flow.data.datasets[1].data = metrics.map(m => m.bytes_recv / 125000);
+                networkCharts.flow.update('none');
+            }
+
+            updateConnections(data.active_connections);
+        }
+
+        function updateConnections(count) {
+            const container = document.getElementById('connectionsContainer');
+            container.innerHTML = '';
+            
+            const statuses = ['ESTABLISHED', 'LISTENING', 'TIME_WAIT', 'CLOSE_WAIT'];
+            const protocols = ['TCP', 'UDP'];
+            
+            for (let i = 0; i < Math.min(count, 10); i++) {
+                const status = statuses[Math.floor(Math.random() * statuses.length)];
+                const protocol = protocols[Math.floor(Math.random() * protocols.length)];
+                
+                let statusClass = '';
+                if (status === 'ESTABLISHED') statusClass = 'success';
+                else if (status === 'LISTENING') statusClass = 'warning';
+                else statusClass = 'danger';
+                
+                const conn = document.createElement('div');
+                conn.className = 'connection-item';
+                conn.innerHTML = `
+                    <div class="connection-info">
+                        <div class="connection-address">
+                            192.168.1.${100+i}:${443+i} → 10.0.1.${50+i}:80
+                        </div>
+                        <div class="connection-details">
+                            <span>Protocol: ${protocol}</span>
+                            <span>Duration: ${Math.floor(Math.random() * 60)}m ${Math.floor(Math.random() * 60)}s</span>
+                            <span>Data: ${(Math.random() * 100).toFixed(1)} MB</span>
+                        </div>
+                    </div>
+                    <div class="connection-status">
+                        <span class="status-indicator ${statusClass}"></span>
+                        <span>${status}</span>
+                    </div>
+                `;
+                container.appendChild(conn);
+            }
+        }
+
+        async function fetchNetworkData() {
+            try {
+                const response = await fetch('/api/realtime-data');
+                const data = await response.json();
+                updateNetworkData(data);
+            } catch (error) {
+                console.error('Error fetching network data:', error);
+            }
+        }
+
+        function refreshData() {
+            fetchNetworkData();
+            // Show refresh feedback
+            const refreshBtn = document.querySelector('.btn i.fa-sync-alt');
+            refreshBtn.classList.add('fa-spin');
+            setTimeout(() => {
+                refreshBtn.classList.remove('fa-spin');
+            }, 1000);
+        }
+
+        function togglePause() {
+            isPaused = !isPaused;
+            const pauseBtn = document.querySelector('.chart-actions .fa-pause');
+            if (isPaused) {
+                pauseBtn.classList.remove('fa-pause');
+                pauseBtn.classList.add('fa-play');
+                clearInterval(updateInterval);
+            } else {
+                pauseBtn.classList.remove('fa-play');
+                pauseBtn.classList.add('fa-pause');
+                updateInterval = setInterval(fetchNetworkData, 2000);
+            }
+        }
+
+        function exportData() {
+            // In a real application, this would trigger a download
+            alert('Export functionality would be implemented here');
+        }
+
+        function showAllConnections() {
+            // In a real application, this would show all connections
+            alert('Showing all connections');
+        }
+
+        function blockSelected() {
+            // In a real application, this would block selected connections
+            alert('Blocking selected connections');
+        }
+
+        async function logout() {
+            try {
+                await fetch('/api/auth/logout', { method: 'POST' });
+                window.location.href = '/auth';
+            } catch (error) {
+                console.error('Error logging out:', error);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeNetworkCharts();
+            fetchNetworkData();
+            updateInterval = setInterval(fetchNetworkData, 2000);
+            
+            // Add event listeners
+            document.querySelector('.fa-pause').closest('.icon-btn').addEventListener('click', togglePause);
+        });
+    </script>
+</body>
+</html>
